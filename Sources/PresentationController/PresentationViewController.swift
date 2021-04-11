@@ -31,11 +31,11 @@ open class PresentationViewController: UIViewController {
 }
 
 extension PresentationViewController {
-    public func frame(containerView: UIView) -> CGRect {
+    @objc open func frame(containerView: UIView) -> CGRect {
         .zero
     }
     
-    public func onTap() -> Void {}
+    @objc open func onTap() -> Void {}
 }
 
 extension PresentationViewController: UIViewControllerTransitioningDelegate {
