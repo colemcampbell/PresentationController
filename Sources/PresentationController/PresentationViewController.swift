@@ -12,20 +12,12 @@ open class PresentationViewController: UIViewController {
     
     // MARK: Properties
     
-    public let frame: (UIView) -> CGRect
-    public let onTap: (() -> Void)?
-    public let presentationBackgroundColor: UIColor?
+    public let backgroundColor: UIColor?
     
     // MARK: Initializers
     
-    public init(
-        presentationBackgroundColor: UIColor? = nil,
-        frame: @escaping (UIView) -> CGRect,
-        onTap: (() -> Void)? = nil
-    ) {
-        self.presentationBackgroundColor = presentationBackgroundColor
-        self.frame = frame
-        self.onTap = onTap
+    public init(backgroundColor: UIColor? = nil) {
+        self.backgroundColor = backgroundColor
         
         super.init(nibName: nil, bundle: nil)
         
@@ -33,17 +25,17 @@ open class PresentationViewController: UIViewController {
         self.transitioningDelegate = self
     }
     
-    public convenience init(
-        frame: CGRect,
-        presentationBackgroundColor: UIColor? = nil,
-        onTap: (() -> Void)? = nil
-    ) {
-        self.init(presentationBackgroundColor: presentationBackgroundColor, frame: { _ in frame }, onTap: onTap)
-    }
-    
     public required init?(coder: NSCoder) {
         nil
     }
+}
+
+extension PresentationViewController {
+    public func frame(containerView: UIView) -> CGRect {
+        .zero
+    }
+    
+    public func onTap() -> Void {}
 }
 
 extension PresentationViewController: UIViewControllerTransitioningDelegate {
@@ -55,9 +47,9 @@ extension PresentationViewController: UIViewControllerTransitioningDelegate {
         PresentationController(
             presented: presented,
             presenting: presenting,
-            backgroundColor: self.presentationBackgroundColor,
-            frame: self.frame,
-            onTap: self.onTap
+            backgroundColor: self.backgroundColor,
+            frame: { [weak self] in self?.frame(containerView: $0) ?? .zero },
+            onTap: { [weak self] in self?.onTap() }
         )
     }
 }
